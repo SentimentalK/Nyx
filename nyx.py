@@ -2,6 +2,7 @@ import time
 import cv2
 from engine.vision_system import vision_system
 from engine.control_system import control_system
+from engine.debug_service import DebugService
 
 class Nyx:
     def __init__(self, game_factory):
@@ -9,6 +10,7 @@ class Nyx:
         self.config = game_factory.load_configuration()
         self.vision = vision_system
         self.control = control_system
+        self.debug = DebugService(self.config)
         self.is_running = True
         
         # Bot持有一个对工厂的引用，以便状态可以从中获取信息

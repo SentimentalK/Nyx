@@ -63,20 +63,16 @@ class AlbionFishingMinigameState(BotState):
 
         # --- 5. Debug视图 ---
         if self.bot.config['general']['debug_mode']:
-            debug_window = self.bot.config['general']['debug_window_name']
-            if location:
+            if location: # location 是 vision_system 返回的坐标
                 bottom_right = (location[0] + self.template_w, location[1] + self.template_h)
+                # 在 screen_image 上画红框
                 cv2.rectangle(screen_image, location, bottom_right, (0, 0, 255), 2)
             
+            # 在 screen_image 上画紫线
             cv2.line(screen_image, (dynamic_release_threshold, 0), (dynamic_release_threshold, roi['height']), (255, 0, 255), 1)
-            cv2.imshow(debug_window, screen_image)
-
-            # 置顶窗口
-            if not self.window_set_topmost:
-                hwnd = win32gui.FindWindow(None, debug_window)
-                if hwnd:
-                    win32gui.SetWindowPos(hwnd, win32con.HWND_TOPMOST, 0,0,0,0, win32con.SWP_NOMOVE | win32con.SWP_NOSIZE)
-                    self.window_set_topmost = True
+            
+            # 将画好信息的图像，交给DebugService去“展示”
+            self.bot.debug.render(screen_image)
 
         # --- 6. 检查退出 ---
         if cv2.waitKey(1) & 0xFF == ord('q'):
