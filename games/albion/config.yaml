@@ -1,0 +1,23 @@
+# ==========================================
+# Albion Online 游戏配置
+# ==========================================
+
+general:
+  debug_mode: True                 # 是否开启调试窗口
+  debug_window_name: "Widget Debug"
+
+vision:
+  confidence_threshold: 0.7        # 图像识别的置信度阈值
+
+fishing:
+  # 钓鱼小游戏的监控区域 (Region of Interest)
+  minigame_roi:
+    left: 820
+    top: 535
+    width: 280
+    height: 80
+  
+  # 动态阈值的随机范围 (百分比)
+  release_threshold_range:
+    min: 0.65
+    max: 0.80
