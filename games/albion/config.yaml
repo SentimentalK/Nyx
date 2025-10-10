@@ -3,7 +3,7 @@
 # ==========================================
 
 general:
-  debug_mode: True                 # 是否开启调试窗口
+  debug_mode: False                 # 是否开启调试窗口
   debug_window_name: "Widget Debug"
 
 vision:

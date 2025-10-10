@@ -63,16 +63,21 @@ class AlbionFishingMinigameState(BotState):
 
         # --- 5. Debug视图 ---
         if self.bot.config['general']['debug_mode']:
-            if location: # location 是 vision_system 返回的坐标
-                bottom_right = (location[0] + self.template_w, location[1] + self.template_h)
-                # 在 screen_image 上画红框
-                cv2.rectangle(screen_image, location, bottom_right, (0, 0, 255), 2)
+            # 创建一个空的绘制指令列表
+            draw_commands = []
             
-            # 在 screen_image 上画紫线
-            cv2.line(screen_image, (dynamic_release_threshold, 0), (dynamic_release_threshold, roi['height']), (255, 0, 255), 1)
+            # 如果找到了目标，就添加一个“画矩形”的指令
+            if location:
+                rect_data = (location[0], location[1], self.template_w, self.template_h)
+                draw_commands.append({'type': 'rectangle', 'rect': rect_data, 'color': 'red'})
             
-            # 将画好信息的图像，交给DebugService去“展示”
-            self.bot.debug.render(screen_image)
+            # 添加一个“画线”的指令
+            line_start = (dynamic_release_threshold, 0)
+            line_end = (dynamic_release_threshold, roi['height'])
+            draw_commands.append({'type': 'line', 'start': line_start, 'end': line_end, 'color': 'purple'})
+
+            # 将原始图像和指令列表一起交给DebugService
+            self.bot.debug.render(screen_image, draw_commands)
 
         # --- 6. 检查退出 ---
         if cv2.waitKey(1) & 0xFF == ord('q'):
